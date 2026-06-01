@@ -3,7 +3,6 @@ package com.igor.pancake.services;
 import java.util.List;
 
 import com.igor.pancake.dtos.PancakeRequestDto;
-import com.igor.pancake.models.Ingredient;
 import com.igor.pancake.models.Pancake;
 
 public interface IPancakeService {
