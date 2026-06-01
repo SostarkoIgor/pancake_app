@@ -1,0 +1,20 @@
+
+spring:
+    application:
+        name: pancake
+    datasource:
+        url: jdbc:postgresql://localhost:5432/pancakes
+        username: postgres
+        password: bazepodataka
+
+    flyway:
+        enabled: true
+
+    jpa:
+        hibernate:
+            ddl-auto: validate
+
+        show-sql: true
+    docker:
+      compose:
+        enabled: false
