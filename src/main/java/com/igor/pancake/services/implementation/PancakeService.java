@@ -75,5 +75,11 @@ public class PancakeService implements IPancakeService {
         return pancakeRepository.findById(id).orElseThrow(
                 ()->new ResourceNotFoundException("Pancake with given id not found"));
     }
-    
+
+    @Override
+    public boolean isPancakeInOrder(Long id) {
+        Pancake pancake = getById(id);
+        return pancake.getOrder()!=null;
+    }
+
 }

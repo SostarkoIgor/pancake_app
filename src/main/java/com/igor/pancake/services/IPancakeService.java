@@ -11,4 +11,5 @@ public interface IPancakeService {
     public boolean delete(Long id);
     public List<Long> getAllPancakeIds();
     public Pancake getById(Long id);
+    public boolean isPancakeInOrder(Long id);
 }
