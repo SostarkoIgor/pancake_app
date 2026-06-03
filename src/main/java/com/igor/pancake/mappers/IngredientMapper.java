@@ -9,6 +9,7 @@ public class IngredientMapper {
                 i.getId(),
                 i.getName(),
                 i.getPrice(),
+                i.isHealthy(),
                 i.getCategory()
         );
     }
@@ -17,15 +18,7 @@ public class IngredientMapper {
         ingredient.setCategory(requestDto.getCategory());
         ingredient.setPrice(requestDto.getPrice());
         ingredient.setName(requestDto.getName());
-        return ingredient;
-    }
-
-    public static Ingredient toIngredientFromDto(IngredientDto ingredientDto){
-        Ingredient ingredient=new Ingredient();
-        ingredient.setId(ingredientDto.getId());
-        ingredient.setCategory(ingredientDto.getCategory());
-        ingredient.setPrice(ingredientDto.getPrice());
-        ingredient.setName(ingredientDto.getName());
+        ingredient.setHealthy(requestDto.isHealthy());
         return ingredient;
     }
 }

@@ -3,6 +3,7 @@ package com.igor.pancake.services.implementation;
 import java.util.List;
 
 import com.igor.pancake.dtos.PancakeRequestDto;
+import com.igor.pancake.exceptions.InvalidPancakeException;
 import com.igor.pancake.exceptions.PancakeIngredientException;
 import com.igor.pancake.exceptions.ResourceNotFoundException;
 import com.igor.pancake.models.Ingredient;
@@ -34,6 +35,7 @@ public class PancakeService implements IPancakeService {
 
         Pancake pancake_ = new Pancake();
         pancake_.setIngredients(ingredients);
+        if (!pancake_.isValid()) throw new InvalidPancakeException("Invalid pancake.");
 
         return pancakeRepository.save(pancake_);
     }
@@ -41,14 +43,22 @@ public class PancakeService implements IPancakeService {
     @Override
     public Pancake update(PancakeRequestDto pancake, Long id) {
         if (pancakeRepository.existsById(id)) {
+            Pancake pancake__ = pancakeRepository.findById(id)
+                    .orElseThrow();
+
+            if (pancake__.getOrder() != null) {
+                throw new IllegalStateException(
+                        "Pancake belongs to an order and cannot be modified");
+            }
             List<Ingredient> ingredients= ingredientRepository.findAllById(pancake.getIngredients());
             if (ingredients!=null && !ingredients.isEmpty()){
 
                 if (pancake.getIngredients().size() != ingredients.size()) {
                     throw new PancakeIngredientException("Some ingredients do not exist");
                 }
-                Pancake pancake_=pancakeRepository.findById(id).get();
+                Pancake pancake_=pancakeRepository.findById(id).orElseThrow();
                 pancake_.setIngredients(ingredients);
+                if (!pancake_.isValid()) throw new InvalidPancakeException("Invalid pancake");
                 return pancakeRepository.save(pancake_);
             }
             else throw new PancakeIngredientException("Not enough ingredients.");
@@ -59,6 +69,11 @@ public class PancakeService implements IPancakeService {
     @Override
     public boolean delete(Long id) {
         if (pancakeRepository.existsById(id)) {
+            Pancake pancake=pancakeRepository.findById(id).orElseThrow();
+            if (pancake.getOrder() != null) {
+                throw new IllegalStateException(
+                        "Pancake belongs to an order and cannot be deleted");
+            }
             pancakeRepository.deleteById(id);
             return true;
         }

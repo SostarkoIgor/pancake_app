@@ -10,6 +10,7 @@ public class OrderMapper {
         dto.setId(order.getId());
         dto.setOrderTime(order.getOrderTime());
         dto.setPancakes(order.getPancakes().stream().map(PancakeMapper::toDTO).toList());
+        dto.setPrice(order.getPrice());
         return dto;
     }
 }

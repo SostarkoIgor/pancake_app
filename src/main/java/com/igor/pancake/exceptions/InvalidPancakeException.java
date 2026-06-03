@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class InvalidOrderPancakeException extends RuntimeException{
-    public InvalidOrderPancakeException(String message) {
+public class InvalidPancakeException extends RuntimeException{
+    public InvalidPancakeException(String message) {
         super(message);
     }
 }

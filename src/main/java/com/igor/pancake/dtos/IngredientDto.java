@@ -13,6 +13,7 @@ public class IngredientDto {
     private Long id;
     private String name;
     private BigDecimal price;
+    private boolean healthy;
     private Category category;
 
 }

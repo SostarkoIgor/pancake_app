@@ -5,6 +5,7 @@ import com.igor.pancake.exceptions.ResourceNotFoundException;
 import com.igor.pancake.mappers.IngredientMapper;
 import com.igor.pancake.models.Ingredient;
 import com.igor.pancake.repository.IngredientRepository;
+import com.igor.pancake.repository.PancakeRepository;
 import com.igor.pancake.services.IIngredientService;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,11 @@ import java.util.List;
 @Service
 public class IngredientService implements IIngredientService {
     private final IngredientRepository ingredientRepository;
+    private final PancakeRepository pancakeRepository;
 
-    public IngredientService(IngredientRepository _ingredientRepository) {
+    public IngredientService(IngredientRepository _ingredientRepository, PancakeRepository pancakeRepository) {
         ingredientRepository = _ingredientRepository;
+        this.pancakeRepository = pancakeRepository;
     }
 
 
@@ -26,8 +29,12 @@ public class IngredientService implements IIngredientService {
 
     @Override
     public Ingredient update(IngredientRequestDto ingredient, Long id) {
+        if (pancakeRepository.existsByIngredients_Id(id)) {
+            throw new IllegalStateException(
+                    "Ingredient is used in a pancake and cannot be deleted");
+        }
         if (ingredientRepository.existsById(id)) {
-            Ingredient ingredient_=ingredientRepository.findById(id).get();
+            Ingredient ingredient_=ingredientRepository.findById(id).orElseThrow();
             if (ingredient.getName() != null) ingredient_.setName(ingredient.getName());
             if (ingredient.getPrice() != null) ingredient_.setPrice(ingredient.getPrice());
             if (ingredient.getCategory() != null) ingredient_.setCategory(ingredient.getCategory());
@@ -38,6 +45,10 @@ public class IngredientService implements IIngredientService {
 
     @Override
     public boolean delete(Long id) {
+        if (pancakeRepository.existsByIngredients_Id(id)) {
+            throw new IllegalStateException(
+                    "Ingredient is used in a pancake and cannot be deleted");
+        }
         if (ingredientRepository.existsById(id)) {
             ingredientRepository.deleteById(id);
             return true;

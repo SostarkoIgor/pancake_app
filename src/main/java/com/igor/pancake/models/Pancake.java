@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,5 +36,18 @@ public class Pancake {
                 .filter(i -> i.getCategory() == Category.nadjev)
                 .count();
         return baseCount == 1 && fillingCount >= 1;
+    }
+
+    public BigDecimal getPrice(){
+        BigDecimal total= BigDecimal.valueOf(0);
+        for (Ingredient ingredient : ingredients) {
+            total = total.add(ingredient.getPrice());
+        }
+        return total;
+    }
+
+    public boolean isHealthy() {
+        long healthyCount = this.ingredients.stream().filter(Ingredient::isHealthy).count();
+        return ((double) healthyCount / this.ingredients.size()) > 0.75;
     }
 }

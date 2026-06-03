@@ -18,6 +18,7 @@ public class Ingredient {
     private Long Id;
     private String name;
     private BigDecimal price;
+    private boolean healthy;
 
     @Enumerated(jakarta.persistence.EnumType.STRING)
     private Category category;

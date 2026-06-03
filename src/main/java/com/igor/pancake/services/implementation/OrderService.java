@@ -2,7 +2,7 @@ package com.igor.pancake.services.implementation;
 
 import com.igor.pancake.dtos.OrderRequestDto;
 import com.igor.pancake.exceptions.InvalidOrderException;
-import com.igor.pancake.exceptions.InvalidOrderPancakeException;
+import com.igor.pancake.exceptions.InvalidPancakeException;
 import com.igor.pancake.exceptions.ResourceNotFoundException;
 import com.igor.pancake.models.Order;
 import com.igor.pancake.models.Pancake;
@@ -26,17 +26,24 @@ public class OrderService implements IOrderService {
 
     @Override
     public Order createOrder(OrderRequestDto dto) {
-        if (dto.getPancakeIds().isEmpty()) throw new InvalidOrderException("Order can not have 0 pancakes");
-        if (arePancakesValid(dto.getPancakeIds())){
-            List<Pancake> pancakes=pancakeRepository.findAllById(dto.getPancakeIds());
-            Order order = new Order();
-            order.setOrderTime(LocalDateTime.now());
-            order.setPancakes(pancakes);
-            order.setDescription(dto.getDescription());
-            pancakes.forEach(p -> p.setOrder(order));
-            return orderRepository.save(order);
+        if (dto.getPancakeIds().isEmpty()) {
+            throw new InvalidOrderException("Order can not have 0 pancakes");
         }
-        throw new InvalidOrderPancakeException("There are invalid pancakes in the order.");
+        List<Pancake> pancakes = pancakeRepository.findAllById(dto.getPancakeIds());
+        if (pancakes.isEmpty()) throw new InvalidOrderException("Order can not have 0 pancakes");
+        boolean alreadyInOrder = pancakes.stream().anyMatch(p -> p.getOrder() != null);
+        if (alreadyInOrder) {
+            throw new InvalidOrderException("Pancake already belongs to an order.");
+        }
+        if (!arePancakesValid(dto.getPancakeIds())) {
+            throw new InvalidPancakeException("Invalid pancakes.");
+        }
+        Order order = new Order();
+        order.setOrderTime(LocalDateTime.now());
+        order.setDescription(dto.getDescription());
+        order.setPancakes(pancakes);
+        pancakes.forEach(p -> p.setOrder(order));
+        return orderRepository.save(order);
     }
 
     @Override

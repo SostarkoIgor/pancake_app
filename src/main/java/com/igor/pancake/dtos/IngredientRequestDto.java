@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 public class IngredientRequestDto {
     private String name;
     private BigDecimal price;
+    private boolean healthy;
     private Category category;
 
 }
