@@ -10,4 +10,6 @@ public interface IIngredientService {
     public Ingredient update(IngredientRequestDto ingredient, Long id);
     public boolean delete(Long id);
     public List<Ingredient> getAll();
+    public Ingredient findMostUsedHealthyLastMonth();
+    public Ingredient findMostUsedLastMonth();
 }

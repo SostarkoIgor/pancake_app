@@ -1,5 +1,4 @@
 package com.igor.pancake.services.implementation;
-
 import com.igor.pancake.dtos.IngredientRequestDto;
 import com.igor.pancake.exceptions.ResourceNotFoundException;
 import com.igor.pancake.mappers.IngredientMapper;
@@ -8,7 +7,7 @@ import com.igor.pancake.repository.IngredientRepository;
 import com.igor.pancake.repository.PancakeRepository;
 import com.igor.pancake.services.IIngredientService;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -59,5 +58,15 @@ public class IngredientService implements IIngredientService {
     @Override
     public List<Ingredient> getAll() {
         return ingredientRepository.findAll().stream().toList();
+    }
+
+    @Override
+    public Ingredient findMostUsedHealthyLastMonth() {
+        return ingredientRepository.findMostUsedHealthyIngredient(LocalDateTime.now().minusMonths(1));
+    }
+
+    @Override
+    public Ingredient findMostUsedLastMonth() {
+        return ingredientRepository.findMostUsedIngredient(LocalDateTime.now().minusMonths(1));
     }
 }
