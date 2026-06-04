@@ -51,4 +51,19 @@ public class PancakeController {
     public PancakeDto getPancake(@PathVariable Long id){
         return PancakeMapper.toDTO(pancakeService.getById(id));
     }
+
+    @DeleteMapping("/{id}/order")
+    public PancakeDto removeFromOrder(@PathVariable Long id){
+        return PancakeMapper.toDTO(pancakeService.removeFromOrder(id));
+    }
+
+    @PostMapping("/{pancakeId}/order/{orderId}")
+    public PancakeDto moveToOrder(@PathVariable Long pancakeId, @PathVariable Long orderId){
+        return PancakeMapper.toDTO(pancakeService.addToOrder(pancakeId, orderId));
+    }
+
+    @GetMapping("/unassigned")
+    public List<PancakeDto> getUnassignedPancakes(){
+        return pancakeService.getPancakesNotInOrder().stream().map(PancakeMapper::toDTO).toList();
+    }
 }

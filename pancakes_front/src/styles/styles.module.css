@@ -1,0 +1,155 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 3rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.title{
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.items{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    padding: 1rem;
+    max-width: 500px;
+    width: 100%;
+}
+
+.item:hover{
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+.itemElementTitle{
+    font-weight: bold;
+}
+
+.element{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    background-color: #d0d0d0;
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+    border: 1px solid black;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+}
+
+.minorTitle{
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.removeButton{
+    background-color: #ff4c4c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.removeButton:hover{
+    background-color: #d00e0e;
+}
+
+.createButton{
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.addButton{
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.addButton:hover{
+    background-color: #3e8e41;
+}
+
+.createButton:hover{
+    background-color: #3e8e41;
+}
+
+.ingredient, .selectedIngredient{
+    background-color: #e5e5e5;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ingredient span{
+    color: #565656;
+}
+
+.ingredient label{
+    font-weight: bold;
+}
+
+.ingredient input{
+    visibility: hidden;
+}
+
+.selectedIngredient{
+    background-color: #a6d9b1;
+}
+
+.ingredient:hover{
+    background-color: #a1a1a1;
+    cursor: pointer;
+}
+
+.selectedIngredient:hover{
+    background-color: #88b892;
+    cursor: pointer;
+}
+
+.ingredients{
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+}
+
+.ingredientList{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}

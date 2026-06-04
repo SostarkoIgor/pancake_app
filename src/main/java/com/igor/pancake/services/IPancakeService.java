@@ -12,4 +12,7 @@ public interface IPancakeService {
     public List<Long> getAllPancakeIds();
     public Pancake getById(Long id);
     public boolean isPancakeInOrder(Long id);
+    public Pancake removeFromOrder(Long pancakeId);
+    public Pancake addToOrder(Long pancakeId, Long orderId);
+    public List<Pancake> getPancakesNotInOrder();
 }

@@ -5,6 +5,7 @@ import com.igor.pancake.models.Order;
 
 public class OrderMapper {
     public static OrderDto toDto(Order order){
+        if (order==null) throw new IllegalStateException("Order was null");
         OrderDto dto= new OrderDto();
         dto.setDescription(order.getDescription());
         dto.setId(order.getId());

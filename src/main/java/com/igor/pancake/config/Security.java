@@ -1,8 +1,8 @@
-package com.igor.pancake.security;
+package com.igor.pancake.config;
 
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -49,15 +49,16 @@ public class Security {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+                .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/reports/**").hasRole("OWNER")
-                        .requestMatchers("/ingredients/**").hasAnyRole("EMPLOYEE")
-                        .requestMatchers("/orders/**").hasAnyRole("CUSTOMER")
-                        .requestMatchers("/pancakes/**").hasAnyRole("CUSTOMER")
+                        .requestMatchers("/ingredients/**").hasRole("EMPLOYEE")
+                        .requestMatchers("/orders/**").hasRole("CUSTOMER")
+                        .requestMatchers("/pancakes/**").hasRole("CUSTOMER")
                         .anyRequest().authenticated()
                 )
-
                 .httpBasic(withDefaults());
 
         return http.build();

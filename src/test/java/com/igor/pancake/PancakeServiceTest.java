@@ -6,7 +6,6 @@ import com.igor.pancake.models.Ingredient;
 import com.igor.pancake.models.Pancake;
 import com.igor.pancake.repository.IngredientRepository;
 import com.igor.pancake.repository.PancakeRepository;
-import com.igor.pancake.services.implementation.IngredientService;
 import com.igor.pancake.services.implementation.PancakeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,12 +14,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)

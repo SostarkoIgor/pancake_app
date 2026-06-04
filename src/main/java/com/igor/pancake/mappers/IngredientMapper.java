@@ -5,6 +5,7 @@ import com.igor.pancake.dtos.*;
 
 public class IngredientMapper {
     public static IngredientDto toDTO(Ingredient i) {
+        if (i==null) throw new IllegalStateException("Ingredient was null");
         return new IngredientDto(
                 i.getId(),
                 i.getName(),
@@ -14,6 +15,7 @@ public class IngredientMapper {
         );
     }
     public static Ingredient toIngredientFromRequestDto(IngredientRequestDto requestDto){
+        if (requestDto==null) throw new IllegalStateException("Dto was null");
         Ingredient ingredient=new Ingredient();
         ingredient.setCategory(requestDto.getCategory());
         ingredient.setPrice(requestDto.getPrice());

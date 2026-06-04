@@ -14,4 +14,5 @@ public class PancakeDto {
     private Long id;
     private BigDecimal price;
     private List<IngredientDto> ingredients;
+    private boolean isHealthy;
 }

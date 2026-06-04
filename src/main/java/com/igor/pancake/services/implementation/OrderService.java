@@ -51,6 +51,11 @@ public class OrderService implements IOrderService {
         return orderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Order not found"));
     }
 
+    @Override
+    public List<Order> getOrders() {
+        return orderRepository.findAll();
+    }
+
     public boolean arePancakesValid(List<Long> pancakeIds){
         List<Pancake> pancakes = pancakeRepository.findAllById(pancakeIds);
         return pancakes.stream().allMatch(Pancake::isValid);

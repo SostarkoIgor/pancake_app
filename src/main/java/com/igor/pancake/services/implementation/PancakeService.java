@@ -4,13 +4,17 @@ import java.util.List;
 
 import com.igor.pancake.dtos.PancakeRequestDto;
 import com.igor.pancake.exceptions.InvalidPancakeException;
+import com.igor.pancake.exceptions.PancakeEditException;
 import com.igor.pancake.exceptions.PancakeIngredientException;
 import com.igor.pancake.exceptions.ResourceNotFoundException;
 import com.igor.pancake.models.Ingredient;
+import com.igor.pancake.models.Order;
 import com.igor.pancake.models.Pancake;
 import com.igor.pancake.repository.IngredientRepository;
+import com.igor.pancake.repository.OrderRepository;
 import com.igor.pancake.repository.PancakeRepository;
 import com.igor.pancake.services.IPancakeService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,9 +22,11 @@ public class PancakeService implements IPancakeService {
 
     private final PancakeRepository pancakeRepository;
     private final IngredientRepository ingredientRepository;
-    public PancakeService(PancakeRepository _pancakeRepository, IngredientRepository _ingredientRepository) {
+    private final OrderRepository orderRepository;
+    public PancakeService(PancakeRepository _pancakeRepository, IngredientRepository _ingredientRepository, OrderRepository orderRepository) {
         pancakeRepository = _pancakeRepository;
         ingredientRepository = _ingredientRepository;
+        this.orderRepository = orderRepository;
     }
     @Override
     public Pancake save(PancakeRequestDto pancake) {
@@ -95,6 +101,51 @@ public class PancakeService implements IPancakeService {
     public boolean isPancakeInOrder(Long id) {
         Pancake pancake = getById(id);
         return pancake.getOrder()!=null;
+    }
+
+    @Override
+    @Transactional
+    public Pancake addToOrder(Long pancakeId, Long orderId) {
+
+        Pancake pancake = pancakeRepository.findById(pancakeId)
+                .orElseThrow();
+
+        if (pancake.getOrder() != null)
+            throw new PancakeEditException("Pancake is already in an order.");
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow();
+
+        pancake.setOrder(order);
+
+        if (order.getPancakes() != null) {
+            order.getPancakes().add(pancake);
+        }
+
+        return pancake;
+    }
+
+    @Override
+    public List<Pancake> getPancakesNotInOrder() {
+        return pancakeRepository.findByOrderIsNull();
+    }
+
+    @Override
+    @Transactional
+    public Pancake removeFromOrder(Long pancakeId) {
+
+        Pancake pancake = pancakeRepository.findById(pancakeId)
+                .orElseThrow();
+        Order order=pancake.getOrder();
+        if (order==null) return pancake;
+        if (order.getPancakes().size() == 1) {
+            throw new PancakeEditException("Cannot remove the only pancake from order.");
+        }
+        pancake.getOrder().getPancakes().remove(pancake);
+
+        pancake.setOrder(null);
+
+        return pancake;
     }
 
 }
