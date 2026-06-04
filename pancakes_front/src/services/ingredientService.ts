@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { IngredientDto } from '../dto/IngredientDto';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: '/api',
 });
 
 api.interceptors.request.use((config) => {
@@ -13,5 +13,6 @@ api.interceptors.request.use((config) => {
 
 export const getIngredients = async (): Promise<IngredientDto[]> => {
     const response = await api.get<IngredientDto[]>('/ingredients');
+    console.log(response.data);
     return response.data;
 }

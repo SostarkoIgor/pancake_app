@@ -6,13 +6,7 @@ import com.igor.pancake.exceptions.PancakeEditException;
 import com.igor.pancake.mappers.PancakeMapper;
 import com.igor.pancake.models.Pancake;
 import com.igor.pancake.services.IPancakeService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,12 +24,12 @@ public class PancakeController {
         return PancakeMapper.toDTO(pancakeService.save(requestDto));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping ("/{id:\\d+}")
     public boolean delete(@PathVariable Long id) {
         return  pancakeService.delete(id);
     }
 
-    @PostMapping("/{id}")
+    @PutMapping ("/{id:\\d+}")
     public PancakeDto update(@RequestBody PancakeRequestDto pancakeRequestDto, @PathVariable Long id) {
         if (pancakeService.isPancakeInOrder(id)) throw new PancakeEditException("Pancake can't be edited due to being in an order.");
         Pancake updatedPancake = pancakeService.update(pancakeRequestDto, id);
@@ -47,17 +41,17 @@ public class PancakeController {
         return pancakeService.getAllPancakeIds();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     public PancakeDto getPancake(@PathVariable Long id){
         return PancakeMapper.toDTO(pancakeService.getById(id));
     }
 
-    @DeleteMapping("/{id}/order")
+    @DeleteMapping("/{id:\\d+}/order")
     public PancakeDto removeFromOrder(@PathVariable Long id){
         return PancakeMapper.toDTO(pancakeService.removeFromOrder(id));
     }
 
-    @PostMapping("/{pancakeId}/order/{orderId}")
+    @PostMapping("/{pancakeId:\\d+}/order/{orderId:\\d+}")
     public PancakeDto moveToOrder(@PathVariable Long pancakeId, @PathVariable Long orderId){
         return PancakeMapper.toDTO(pancakeService.addToOrder(pancakeId, orderId));
     }
